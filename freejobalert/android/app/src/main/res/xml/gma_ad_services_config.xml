@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ad-services-config>
+    <include-data-collection-sdk-info>true</include-data-collection-sdk-info>
+</ad-services-config>

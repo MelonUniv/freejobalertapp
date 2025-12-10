@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "753749625146",
+    "project_id": "freejobalert-2f794",
+    "storage_bucket": "freejobalert-2f794.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753749625146:android:423a86c56751dc0ceca803",
+        "android_client_info": {
+          "package_name": "com.freejobalert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753749625146-ggr9o9pdpntjbuohnro0op1nu16t0j36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2K_wCJV_ikkkaECnZVcRWorV1YhQk8rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753749625146-ggr9o9pdpntjbuohnro0op1nu16t0j36.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

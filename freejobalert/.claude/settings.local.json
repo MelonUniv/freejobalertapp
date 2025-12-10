@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter run:*)",
+      "Bash(ping:*)",
+      "Bash(nul)",
+      "Bash(flutter clean:*)",
+      "Bash(C:UserssilamAppDataLocalAndroidsdkplatform-toolsadb.exe -s emulator-5554 shell dumpsys window)",
+      "Bash(findstr:*)",
+      "Bash(C:UserssilamAppDataLocalAndroidsdkplatform-toolsadb.exe -s emulator-5554 shell \"ps | grep freejobalert\")",
+      "Bash(\"C:\\Users\\silam\\AppData\\Local\\Android\\sdk\\platform-tools\\adb.exe\" -s emulator-5554 logcat -d)",
+      "Bash(xcrun simctl list:*)",
+      "Bash(flutter pub upgrade:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
