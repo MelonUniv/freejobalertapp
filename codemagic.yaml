@@ -8,7 +8,7 @@ workflows:
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.freejobalert.app
+        bundle_identifier: com.freejobalert
       vars:
         APP_ID: YOUR_APP_STORE_APP_ID
       flutter: stable
@@ -61,7 +61,7 @@ workflows:
     environment:
       ios_signing:
         distribution_type: development
-        bundle_identifier: com.freejobalert.app
+        bundle_identifier: com.freejobalert
       flutter: stable
       xcode: latest
       cocoapods: default
