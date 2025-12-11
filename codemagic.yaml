@@ -1,0 +1,106 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    integrations:
+      app_store_connect: codemagic
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.freejobalert.app
+      vars:
+        APP_ID: YOUR_APP_STORE_APP_ID
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Get Flutter packages
+        script: |
+          cd freejobalert
+          flutter packages pub get
+      - name: Install pods
+        script: |
+          cd freejobalert/ios
+          pod install
+      - name: Flutter analyze
+        script: |
+          cd freejobalert
+          flutter analyze
+      - name: Flutter build ipa
+        script: |
+          cd freejobalert
+          flutter build ipa --release \
+            --build-name=1.0.0 \
+            --build-number=$(($(app-store-connect get-latest-testflight-build-number "$APP_ID") + 1)) \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - freejobalert/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - freejobalert/flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+
+  ios-workflow-development:
+    name: iOS Development Build
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      ios_signing:
+        distribution_type: development
+        bundle_identifier: com.freejobalert.app
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'develop'
+          include: true
+        - pattern: 'feature/*'
+          include: true
+    scripts:
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles
+      - name: Get Flutter packages
+        script: |
+          cd freejobalert
+          flutter packages pub get
+      - name: Install pods
+        script: |
+          cd freejobalert/ios
+          pod install
+      - name: Flutter analyze
+        script: |
+          cd freejobalert
+          flutter analyze
+      - name: Flutter build ipa (development)
+        script: |
+          cd freejobalert
+          flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - freejobalert/build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify:
+          success: true
+          failure: true
