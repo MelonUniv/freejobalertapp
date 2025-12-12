@@ -12,7 +12,6 @@ workflows:
         APP_ID: 6740543857
         APP_STORE_CONNECT_KEY_IDENTIFIER: L6X2V5XN67
         APP_STORE_CONNECT_ISSUER_ID: 107d188a-7b8d-47df-999b-401c1e5bc782
-        APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(hhpd-ojot-ccsl-drbp)
       flutter: stable
       xcode: latest
       cocoapods: default
