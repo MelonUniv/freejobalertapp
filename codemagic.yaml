@@ -4,14 +4,15 @@ workflows:
     instance_type: mac_mini_m1
     max_build_duration: 60
     working_directory: freejobalert
-    integrations:
-      app_store_connect: codemagic
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.freejobalert
       vars:
-        APP_ID: YOUR_APP_STORE_APP_ID
+        APP_ID: 6740543857
+        APP_STORE_CONNECT_KEY_IDENTIFIER: L6X2V5XN67
+        APP_STORE_CONNECT_ISSUER_ID: 107d188a-7b8d-47df-999b-401c1e5bc782
+        APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(hhpd-ojot-ccsl-drbp)
       flutter: stable
       xcode: latest
       cocoapods: default
@@ -47,7 +48,9 @@ workflows:
           success: true
           failure: true
       app_store_connect:
-        auth: integration
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         beta_groups:
           - Internal Testers
