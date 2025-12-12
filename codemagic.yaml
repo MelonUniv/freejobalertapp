@@ -1,64 +1,58 @@
 workflows:
   ios-workflow:
-    name: iOS Workflow
-    instance_type: mac_mini_m1
+    name: iOS App Store Release
+    instance_type: mac_mini_m2
     max_build_duration: 60
     working_directory: freejobalert
+    integrations:
+      app_store_connect: CodeMagic API Key
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.freejobalert
       vars:
         APP_ID: 6740543857
-        APP_STORE_CONNECT_KEY_IDENTIFIER: L6X2V5XN67
-        APP_STORE_CONNECT_ISSUER_ID: 107d188a-7b8d-47df-999b-401c1e5bc782
       flutter: stable
       xcode: latest
       cocoapods: default
     scripts:
-      - name: Set up code signing settings on Xcode project
-        script: |
-          xcode-project use-profiles
       - name: Get Flutter packages
         script: |
-          flutter packages pub get
+          flutter pub get
       - name: Install pods
         script: |
-          cd ios
-          pod install
-      - name: Flutter analyze
+          cd ios && pod install
+      - name: Set up code signing
         script: |
-          flutter analyze
+          xcode-project use-profiles
       - name: Flutter build ipa
         script: |
           flutter build ipa --release \
             --build-name=1.0.0 \
-            --build-number=$(($(app-store-connect get-latest-testflight-build-number "$APP_ID") + 1)) \
-            --export-options-plist=/Users/builder/export_options.plist
+            --build-number=$(($(app-store-connect get-latest-testflight-build-number "$APP_ID") + 1))
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-      - flutter_drive.log
     publishing:
       email:
         recipients:
-          - your-email@example.com
+          - christopher.selvin@gmail.com
         notify:
           success: true
           failure: true
       app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        auth: integration
         submit_to_testflight: true
         beta_groups:
           - Internal Testers
 
   ios-workflow-development:
     name: iOS Development Build
-    instance_type: mac_mini_m1
+    instance_type: mac_mini_m2
     max_build_duration: 60
     working_directory: freejobalert
+    integrations:
+      app_store_connect: CodeMagic API Key
     environment:
       ios_signing:
         distribution_type: development
@@ -75,30 +69,25 @@ workflows:
         - pattern: 'feature/*'
           include: true
     scripts:
-      - name: Set up code signing settings on Xcode project
-        script: |
-          xcode-project use-profiles
       - name: Get Flutter packages
         script: |
-          flutter packages pub get
+          flutter pub get
       - name: Install pods
         script: |
-          cd ios
-          pod install
-      - name: Flutter analyze
+          cd ios && pod install
+      - name: Set up code signing
         script: |
-          flutter analyze
+          xcode-project use-profiles
       - name: Flutter build ipa (development)
         script: |
-          flutter build ipa --release \
-            --export-options-plist=/Users/builder/export_options.plist
+          flutter build ipa --release
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
     publishing:
       email:
         recipients:
-          - your-email@example.com
+          - christopher.selvin@gmail.com
         notify:
           success: true
           failure: true
