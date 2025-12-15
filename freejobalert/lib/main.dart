@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'firebase_options.dart';
 import 'screens/splash_screen.dart';
 import 'services/ad_helper.dart';
 import 'services/ad_manager.dart';
@@ -7,11 +10,33 @@ import 'utils/app_logger.dart';
 // Global navigator key for navigation from anywhere in the app
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+// Background message handler
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  AppLogger.firebase('Handling background message: ${message.messageId}');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Firebase disabled due to iOS build issues
-  // TODO: Re-enable Firebase when modular header issue is fixed
+  // Initialize Firebase
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    ).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        AppLogger.error('Firebase initialization timed out');
+        throw Exception('Firebase initialization failed');
+      },
+    );
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    AppLogger.success('Firebase Core initialized successfully');
+  } catch (e, stackTrace) {
+    AppLogger.error('Failed to initialize Firebase', e, stackTrace);
+  }
 
   // Google Mobile Ads initialization
   try {
