@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 60
     working_directory: freejobalert
     integrations:
-      app_store_connect: CodeMagic
+      app_store_connect: freejobalert
     environment:
       ios_signing:
         distribution_type: app_store
@@ -57,7 +57,7 @@ workflows:
     max_build_duration: 60
     working_directory: freejobalert
     integrations:
-      app_store_connect: CodeMagic
+      app_store_connect: freejobalert
     environment:
       ios_signing:
         distribution_type: development
