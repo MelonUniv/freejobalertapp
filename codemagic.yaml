@@ -16,18 +16,23 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
+      - name: Clean build artifacts
+        script: |
+          flutter clean
+          cd ios && rm -rf Pods Podfile.lock
       - name: Get Flutter packages
         script: |
           flutter pub get
       - name: Install pods
         script: |
-          cd ios && pod install
+          cd ios && pod install --repo-update
       - name: Set up code signing
         script: |
           xcode-project use-profiles
       - name: Flutter build ipa
         script: |
           flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist \
             --build-name=1.0.0 \
             --build-number=$(($(app-store-connect get-latest-testflight-build-number "$APP_ID") + 1))
     artifacts:
