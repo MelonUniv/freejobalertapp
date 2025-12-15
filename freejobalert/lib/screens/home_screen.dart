@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../services/api_service.dart';
 import '../services/bookmark_service.dart';
-import '../services/firebase_service.dart';
+// Firebase disabled due to iOS build issues
+// import '../services/firebase_service.dart';
 import '../services/screen_wrapper.dart';
 import '../services/ad_manager.dart';
 import '../utils/app_logger.dart';
@@ -40,26 +41,27 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadJobs();
-    // Initialize Firebase Messaging and subscribe to topics
-    _initializeNotifications();
+    // Firebase disabled due to iOS build issues
+    // _initializeNotifications();
   }
 
-  void _initializeNotifications() {
-    // Run after frame is built to ensure UI context is ready for permission dialog
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      try {
-        // This will show the permission dialog on Android 13+
-        await FirebaseService.initialize();
-
-        // Subscribe to topics after permission is granted
-        await FirebaseService.subscribeToTopic('all_jobs');
-        await FirebaseService.subscribeToTopic('new_updates');
-      } catch (e) {
-        // Silently fail - notifications will still work with default topics
-        AppLogger.warning('Failed to initialize notifications: $e');
-      }
-    });
-  }
+  // Firebase disabled due to iOS build issues
+  // void _initializeNotifications() {
+  //   // Run after frame is built to ensure UI context is ready for permission dialog
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //     try {
+  //       // This will show the permission dialog on Android 13+
+  //       await FirebaseService.initialize();
+  //
+  //       // Subscribe to topics after permission is granted
+  //       await FirebaseService.subscribeToTopic('all_jobs');
+  //       await FirebaseService.subscribeToTopic('new_updates');
+  //     } catch (e) {
+  //       // Silently fail - notifications will still work with default topics
+  //       AppLogger.warning('Failed to initialize notifications: $e');
+  //     }
+  //   });
+  // }
 
   Future<void> _loadJobs() async {
     if (_isLoading) return;
