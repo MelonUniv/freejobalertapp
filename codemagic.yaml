@@ -10,7 +10,6 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.freejobalert
-        certificate: Automatic
       vars:
         APP_ID: 6756413069
       flutter: stable
